@@ -1,7 +1,9 @@
 import React from "react";
+import styled from "styled-components";
+
 
 const Display = ({ title, repos }) => {
-  
+
   const items = repos.map(({id, repoTitle, repoDescription}) => (
     <li key={id}>
       <div>
@@ -14,11 +16,14 @@ const Display = ({ title, repos }) => {
   ));
 
   return (
-    <div>
+    <Container repos={repos}>
       <h2>{title}</h2>
       <ul>{items}</ul>      
-    </div>
+    </Container>
   );
 };
 
 export default Display;
+const Container = styled.div`
+  display: ${props => (props.repos.length > 0 ? "block" : "none")};
+`;

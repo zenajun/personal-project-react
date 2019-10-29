@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Form from './components/Form'
 import Display from './components/Display';
+import BackButton from './components/BackButton';
 
 const App = () => {
   const [username, setUsername] = useState('');
-  const [repos, setRepos] = useState([])
+  const [repos, setRepos] = useState(false)
 
   const handleChange = e => {
     setUsername(e.target.value)
@@ -15,6 +16,11 @@ const App = () => {
     fetch(`https://api.github.com/users/${username}/events`)
       .then(res => res.status === 200 ? res.json() : setRepos(false))
       .then(data => setRepos(data))
+  }
+  
+  const handleNewSearch = (e) => {
+    setUsername('');
+    setRepos(false);
   }
 
   if (!repos) {
@@ -46,19 +52,15 @@ const App = () => {
         repoDescription: repo.payload.pull_request.state
       }
     });
-    
-    
+        
   return (
     <div>
-      <Form
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        username={username}
-      />
       <Display title={"Recent Forks"} repos={forkedRepos} />
-      <Display title={"Recent Pull Requests"} repos={pullRequests} />{" "}
+      <Display title={"Recent Pull Requests"} repos={pullRequests} />
+      <BackButton handleNewSearch={handleNewSearch} />
     </div>
   );
 }
 
 export default App;
+
