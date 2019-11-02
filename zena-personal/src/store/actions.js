@@ -9,22 +9,26 @@ export const setApiList = (apis = []) => ({
 });
 
 export const setIsLoadingApiList = (isLoading = false) => ({
-  type: ACTION_TYPES.SET_API_LIST,
+  type: ACTION_TYPES.SET_IS_LOADING,
   payload: isLoading
 });
 
 // Thunk to fetch GitHub Events
 
-export const fetchGitHubEvents = (dispatch, username) => {
+export const fetchGitHubEvents = username => dispatch => {
   const API_URL = `https://api.github.com/users/${username}/events`;
 
-  return fetch(API_URL)
-    .then(res => (res.status === 200 ? res.json() : setLoading(false)))
-    .then(data => {
-      dispatch(setApiList(data));
-      dispatch(setIsLoadingApiList(true));
-      // setRepos(data);
-      // setLoading(true);
-    })
-    .catch(err => console.log(err.message));
+  return (
+    fetch(API_URL)
+      // .then(res =>
+      //   res.status === 200 ? res.json() : dispatch(setIsLoadingApiList(false))
+      // )
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        dispatch(setApiList(data));
+        dispatch(setIsLoadingApiList(true));
+      })
+      .catch(err => console.log(err.message))
+  );
 };

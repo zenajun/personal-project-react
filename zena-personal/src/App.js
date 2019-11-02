@@ -1,13 +1,13 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { fetchGitHubEvents } from "./store/actions";
 import Form from "./components/Form";
 import DisplayList from "./components/DisplayList";
 import styled from "styled-components";
 // redux
 
-const App = () => {
+export const App = ({ repos, isLoaded, loadApi }) => {
   const [username, setUsername] = useState("");
-  const [repos, setRepos] = useState([]);
-  const [isLoaded, setLoading] = useState(false);
 
   const handleChange = e => {
     setUsername(e.target.value);
@@ -16,19 +16,8 @@ const App = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    fetch(`https://api.github.com/users/${username}/events`)
-      .then(res => (res.status === 200 ? res.json() : setLoading(false)))
-      .then(data => {
-        setRepos(data);
-        setLoading(true);
-      })
-      .catch(err => console.log(err.message));
+    loadApi(username);
   };
-
-  // const handleNewSearch = (e) => {
-  //   setUsername('');
-  //   setRepos(false);
-  // }
 
   if (!isLoaded) {
     return (
@@ -76,13 +65,23 @@ const App = () => {
           repos={pullRequests}
           repoRoot="status: "
         />
-        {/* <BackButton handleNewSearch={handleNewSearch} /> */}
       </RepoDisplay>
     );
   }
 };
+const mapStateToProps = state => ({
+  repos: state.api,
+  isLoaded: state.isLoaded
+});
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  loadApi: username => dispatch(fetchGitHubEvents(username))
+});
+
+export const ConnectedApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
 
 const RepoDisplay = styled.div`
   h2 {
