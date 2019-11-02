@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Form from "./components/Form";
 import DisplayList from "./components/DisplayList";
-// import BackButton from './components/BackButton';
-// import ".App.css";
+import styled from "styled-components";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -64,13 +63,30 @@ const App = () => {
       });
 
     return (
-      <div className="wrapper">
-        <DisplayList title={"Recent Forks"} repos={forkedRepos} />
-        <DisplayList title={"Recent Pull Requests"} repos={pullRequests} />
+      <RepoDisplay className="wrapper">
+        <h2>{username}</h2>
+        <DisplayList
+          title={"Recent Forks"}
+          repos={forkedRepos}
+          repoRoot="Forked from: "
+        />
+        <DisplayList
+          title={"Recent Pull Requests"}
+          repos={pullRequests}
+          repoRoot="status: "
+        />
         {/* <BackButton handleNewSearch={handleNewSearch} /> */}
-      </div>
+      </RepoDisplay>
     );
   }
 };
 
 export default App;
+
+const RepoDisplay = styled.div`
+  h2 {
+    font-size: 3.5rem;
+    text-align: center;
+    font-weight: bold;
+  }
+`;

@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import DisplayListItem from "./DisplayListItem";
 
-const DisplayList = ({ title, repos }) => {
+const DisplayList = ({ title, repos, repoRoot }) => {
   return (
-    <Container repos={repos}>
-      <h2>{title}</h2>
+    <List repos={repos}>
+      <h2 className="title">{title}</h2>
       <ul>
         {repos.map(({ id, repoTitle, repoDescription, url }) => {
           return (
@@ -14,15 +14,25 @@ const DisplayList = ({ title, repos }) => {
               repoTitle={repoTitle}
               url={url}
               repoDescription={repoDescription}
+              repoRoot={repoRoot}
             />
           );
         })}
       </ul>
-    </Container>
+    </List>
   );
 };
 
 export default DisplayList;
-const Container = styled.div`
+const List = styled.div`
   display: ${props => (props.repos.length > 0 ? "block" : "none")};
+  h2.title {
+    font-size: 1.8rem;
+    text-align: left;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 `;

@@ -1,8 +1,9 @@
 import React from "react";
+import styled from "styled-components";
 
-const DisplayListItem = ({ repoTitle, repoDescription, url }) => {
+const DisplayListItem = ({ repoTitle, repoDescription, url, repoRoot }) => {
   return (
-    <li>
+    <ListItem>
       <div>
         <h3>
           <a href={url} target="_blank" rel="noopener noreferrer">
@@ -11,10 +12,24 @@ const DisplayListItem = ({ repoTitle, repoDescription, url }) => {
         </h3>
       </div>
       <div>
-        <span>{repoDescription}</span>
+        <span>
+          {repoRoot || ""}
+          {repoDescription}
+        </span>
       </div>
-    </li>
+    </ListItem>
   );
 };
 
 export default DisplayListItem;
+const ListItem = styled.li`
+  border: 1px solid grey;
+  border-radius: 3px;
+  padding: 15px;
+  h3 {
+    font-size: 1.8rem;
+  }
+  span {
+    font-size: 1.6rem;
+  }
+`;
