@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Form from "./components/Form";
 import DisplayList from "./components/DisplayList";
 import styled from "styled-components";
+// redux
 
 const App = () => {
   const [username, setUsername] = useState("");
