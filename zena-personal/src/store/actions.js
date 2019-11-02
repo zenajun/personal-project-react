@@ -14,3 +14,17 @@ export const setIsLoadingApiList = (isLoading = false) => ({
 });
 
 // Thunk to fetch GitHub Events
+
+export const fetchGitHubEvents = (dispatch, username) => {
+  const API_URL = `https://api.github.com/users/${username}/events`;
+
+  return fetch(API_URL)
+    .then(res => (res.status === 200 ? res.json() : setLoading(false)))
+    .then(data => {
+      dispatch(setApiList(data));
+      dispatch(setIsLoadingApiList(true));
+      // setRepos(data);
+      // setLoading(true);
+    })
+    .catch(err => console.log(err.message));
+};
