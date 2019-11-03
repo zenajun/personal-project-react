@@ -4,9 +4,8 @@ import { fetchGitHubEvents } from "./store/actions";
 import Form from "./components/Form";
 import DisplayList from "./components/DisplayList";
 import styled from "styled-components";
-// redux
 
-export const App = ({ repos, isLoaded, loadApi }) => {
+export const App = ({ repos, isLoaded, userNotFound, loadApi }) => {
   const [username, setUsername] = useState("");
 
   const handleChange = e => {
@@ -15,11 +14,12 @@ export const App = ({ repos, isLoaded, loadApi }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
     loadApi(username);
   };
 
-  if (!isLoaded) {
+  if (!isLoaded || userNotFound) {
+    // const user
+
     return (
       <div className="wrapper">
         <Form
@@ -54,6 +54,11 @@ export const App = ({ repos, isLoaded, loadApi }) => {
 
     return (
       <RepoDisplay className="wrapper">
+        <Form
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          username={username}
+        />
         <h2>{username}</h2>
         <DisplayList
           title={"Recent Forks"}
@@ -71,7 +76,8 @@ export const App = ({ repos, isLoaded, loadApi }) => {
 };
 const mapStateToProps = state => ({
   repos: state.api,
-  isLoaded: state.isLoaded
+  isLoaded: state.isLoaded,
+  userNotFound: state.userNotFound
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -7,17 +7,22 @@ const DisplayList = ({ title, repos, repoRoot }) => {
     <List repos={repos}>
       <h2 className="title">{title}</h2>
       <ul>
-        {repos.map(({ id, repoTitle, repoDescription, url }) => {
-          return (
-            <DisplayListItem
-              key={id}
-              repoTitle={repoTitle}
-              url={url}
-              repoDescription={repoDescription}
-              repoRoot={repoRoot}
-            />
-          );
-        })}
+        {repos.length > 0 ? (
+          repos.map(({ id, repoTitle, repoDescription, url }) => {
+            return (
+              <DisplayListItem
+                key={id}
+                repoTitle={repoTitle}
+                url={url}
+                repoDescription={repoDescription}
+                repoRoot={repoRoot}
+              />
+            );
+          })
+        ) : (
+          <li>No {title}</li>
+        )}
+        {}
       </ul>
     </List>
   );
@@ -25,7 +30,6 @@ const DisplayList = ({ title, repos, repoRoot }) => {
 
 export default DisplayList;
 const List = styled.div`
-  display: ${props => (props.repos.length > 0 ? "block" : "none")};
   h2.title {
     font-size: 1.8rem;
     text-align: left;
@@ -34,5 +38,8 @@ const List = styled.div`
     margin: 0;
     padding: 0;
     list-style: none;
+    li {
+      font-size: 1.6rem;
+    }
   }
 `;

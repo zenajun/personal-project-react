@@ -1,8 +1,9 @@
 import { ACTION_TYPES } from "./actions";
 
 export const INITIAL_STATE = {
+  api: [],
   isLoaded: false,
-  api: []
+  userNotFound: false
 };
 
 export const apiReducer = (state = INITIAL_STATE, action) => {
@@ -11,6 +12,8 @@ export const apiReducer = (state = INITIAL_STATE, action) => {
       return { ...state, api: action.payload };
     case ACTION_TYPES.SET_IS_LOADING:
       return { ...state, isLoaded: action.payload };
+    case ACTION_TYPES.USER_NOT_FOUND:
+      return { ...state, userNotFound: action.payload };
 
     default:
       return state;
