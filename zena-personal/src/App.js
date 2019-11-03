@@ -4,6 +4,10 @@ import { fetchGitHubEvents } from "./store/actions";
 import Form from "./components/Form";
 import DisplayList from "./components/DisplayList";
 import styled from "styled-components";
+import {
+  filterPullRequests,
+  filterForkedRepos
+} from "./helpers/helperFunctions";
 
 export const App = ({ repos, isLoaded, userNotFound, loadApi }) => {
   const [username, setUsername] = useState("");
@@ -18,8 +22,6 @@ export const App = ({ repos, isLoaded, userNotFound, loadApi }) => {
   };
 
   if (!isLoaded || userNotFound) {
-    // const user
-
     return (
       <div className="wrapper">
         <Form
@@ -30,35 +32,10 @@ export const App = ({ repos, isLoaded, userNotFound, loadApi }) => {
       </div>
     );
   } else {
-    const forkedRepos = repos
-      .filter(repo => repo.type === "ForkEvent")
-      .map(repo => {
-        return {
-          id: repo.id,
-          repoTitle: repo.payload.forkee.full_name,
-          repoDescription: repo.repo.name,
-          url: repo.payload.forkee.html_url
-        };
-      });
-
-    const pullRequests = repos
-      .filter(repo => repo.type === "PullRequestEvent")
-      .map(repo => {
-        return {
-          id: repo.id,
-          repoTitle: repo.payload.pull_request.title,
-          repoDescription: repo.payload.pull_request.state,
-          url: repo.payload.pull_request.html_url
-        };
-      });
-
+    const forkedRepos = filterForkedRepos(repos);
+    const pullRequests = filterPullRequests(repos);
     return (
       <RepoDisplay className="wrapper">
-        <Form
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          username={username}
-        />
         <h2>{username}</h2>
         <DisplayList
           title={"Recent Forks"}

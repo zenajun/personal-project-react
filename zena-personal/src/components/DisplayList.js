@@ -22,7 +22,6 @@ const DisplayList = ({ title, repos, repoRoot }) => {
         ) : (
           <li>No {title}</li>
         )}
-        {}
       </ul>
     </List>
   );

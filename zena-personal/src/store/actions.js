@@ -20,10 +20,8 @@ export const setUserNotFound = (status = false) => ({
 });
 
 // Thunk to fetch GitHub Events
-
 export const fetchGitHubEvents = username => dispatch => {
   const API_URL = `https://api.github.com/users/${username}/events`;
-  console.log(API_URL);
 
   return fetch(API_URL)
     .then(res => {

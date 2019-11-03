@@ -26,6 +26,7 @@ const ListItem = styled.li`
   border: 1px solid grey;
   border-radius: 3px;
   padding: 15px;
+  margin-bottom: 15px;
   h3 {
     font-size: 1.8rem;
   }
