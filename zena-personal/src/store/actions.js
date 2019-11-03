@@ -1,7 +1,8 @@
 export const ACTION_TYPES = {
   SET_API_LIST: "set API list",
   SET_IS_LOADING: "set is loading",
-  USER_NOT_FOUND: "user not found"
+  USER_NOT_FOUND: "user not found",
+  NEW_SEARCH: "search for a new user"
 };
 
 export const setApiList = (apis = []) => ({
@@ -17,6 +18,10 @@ export const setIsLoadingApiList = (isLoading = false) => ({
 export const setUserNotFound = (status = false) => ({
   type: ACTION_TYPES.USER_NOT_FOUND,
   payload: status
+});
+
+export const newSearch = () => ({
+  type: ACTION_TYPES.NEW_SEARCH
 });
 
 // Thunk to fetch GitHub Events

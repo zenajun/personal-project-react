@@ -14,6 +14,8 @@ export const apiReducer = (state = INITIAL_STATE, action) => {
       return { ...state, isLoaded: action.payload };
     case ACTION_TYPES.USER_NOT_FOUND:
       return { ...state, userNotFound: action.payload };
+    case ACTION_TYPES.NEW_SEARCH:
+      return INITIAL_STATE;
 
     default:
       return state;

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { fetchGitHubEvents } from "./store/actions";
+import { fetchGitHubEvents, newSearch } from "./store/actions";
+import styled from "styled-components";
 import Form from "./components/Form";
 import DisplayList from "./components/DisplayList";
-import styled from "styled-components";
+import BackButton from "./components/BackButton";
 import {
   filterPullRequests,
   filterForkedRepos
 } from "./helpers/helperFunctions";
 
-export const App = ({ repos, isLoaded, userNotFound, loadApi }) => {
+export const App = ({ repos, isLoaded, userNotFound, loadApi, newSearch }) => {
   const [username, setUsername] = useState("");
 
   const handleChange = e => {
@@ -19,6 +20,12 @@ export const App = ({ repos, isLoaded, userNotFound, loadApi }) => {
   const handleSubmit = e => {
     e.preventDefault();
     loadApi(username);
+  };
+
+  const handleNewSearch = e => {
+    e.preventDefault();
+    setUsername("");
+    newSearch();
   };
 
   if (!isLoaded || userNotFound) {
@@ -54,6 +61,7 @@ export const App = ({ repos, isLoaded, userNotFound, loadApi }) => {
           repos={pullRequests}
           repoRoot="status: "
         />
+        <BackButton handleNewSearch={handleNewSearch} />
       </RepoDisplay>
     );
   }
@@ -65,7 +73,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadApi: username => dispatch(fetchGitHubEvents(username))
+  loadApi: username => dispatch(fetchGitHubEvents(username)),
+  newSearch: () => dispatch(newSearch())
 });
 
 export const ConnectedApp = connect(
