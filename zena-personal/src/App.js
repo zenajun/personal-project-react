@@ -23,13 +23,20 @@ export const App = ({ repos, isLoaded, userNotFound, loadApi }) => {
 
   if (!isLoaded || userNotFound) {
     return (
-      <div className="wrapper">
+      <FormDisplay className="wrapper">
         <Form
           handleChange={handleChange}
           handleSubmit={handleSubmit}
           username={username}
         />
-      </div>
+        {userNotFound ? (
+          <p className="not-found">
+            <strong>{username}</strong> not found, please try again.
+          </p>
+        ) : (
+          ""
+        )}
+      </FormDisplay>
     );
   } else {
     const forkedRepos = filterForkedRepos(repos);
@@ -66,6 +73,12 @@ export const ConnectedApp = connect(
   mapDispatchToProps
 )(App);
 
+const FormDisplay = styled.div`
+  p.not-found {
+    font-size: 2rem;
+    text-align: center;
+  }
+`;
 const RepoDisplay = styled.div`
   h2 {
     font-size: 3.5rem;
