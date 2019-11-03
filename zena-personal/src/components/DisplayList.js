@@ -20,7 +20,7 @@ const DisplayList = ({ title, repos, repoRoot }) => {
             );
           })
         ) : (
-          <li>No {title}</li>
+          <li>No {title} 🙅‍🍽</li>
         )}
       </ul>
     </List>
@@ -29,6 +29,7 @@ const DisplayList = ({ title, repos, repoRoot }) => {
 
 export default DisplayList;
 const List = styled.div`
+  margin-bottom: 50px;
   h2.title {
     font-size: 1.8rem;
     text-align: left;
