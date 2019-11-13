@@ -1,67 +1,28 @@
 import React, { useState } from "react";
 import Form from "./components/Form";
 import DisplayList from "./components/DisplayList";
-import styled from "styled-components";
 
 const App = () => {
+  const [pullRequestData, setPullRequestData] = useState([]);
+  const [forkedRepoData, setForkedRepoData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState("");
-  const [repos, setRepos] = useState([]);
-  const [isLoaded, setLoading] = useState(false);
 
-  const handleChange = e => {
-    setUsername(e.target.value);
-  };
+  const getPullRequests = data => setPullRequestData(data);
+  const getForkedRepos = data => setForkedRepoData(data);
+  const getIsLoading = (isLoading = false) => setIsLoading(isLoading);
+  const getUsername = username => setUsername(username);
 
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    fetch(`https://api.github.com/users/${username}/events`)
-      .then(res => (res.status === 200 ? res.json() : setLoading(false)))
-      .then(data => {
-        setRepos(data);
-        setLoading(true);
-      })
-      .catch(err => console.log(err.message));
-  };
-
-  // const handleNewSearch = (e) => {
-  //   setUsername('');
-  //   setRepos(false);
-  // }
-
-  if (!isLoaded) {
+  if (!isLoading) {
     return (
-      <div className="wrapper">
-        <Form
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          username={username}
-        />
-      </div>
+      <Form
+        getPullRequests={getPullRequests}
+        getForkedRepos={getForkedRepos}
+        getIsLoading={getIsLoading}
+        getUsername={getUsername}
+      />
     );
   } else {
-    const forkedRepos = repos
-      .filter(repo => repo.type === "ForkEvent")
-      .map(repo => {
-        return {
-          id: repo.id,
-          repoTitle: repo.payload.forkee.full_name,
-          repoDescription: repo.repo.name,
-          url: repo.payload.forkee.html_url
-        };
-      });
-
-    const pullRequests = repos
-      .filter(repo => repo.type === "PullRequestEvent")
-      .map(repo => {
-        return {
-          id: repo.id,
-          repoTitle: repo.payload.pull_request.title,
-          repoDescription: repo.payload.pull_request.state,
-          url: repo.payload.pull_request.html_url
-        };
-      });
-
     return (
       <RepoDisplay className="wrapper">
         <h2>{username}</h2>
@@ -75,18 +36,8 @@ const App = () => {
           repos={pullRequests}
           repoRoot="status: "
         />
-        {/* <BackButton handleNewSearch={handleNewSearch} /> */}
       </RepoDisplay>
     );
   }
 };
-
 export default App;
-
-const RepoDisplay = styled.div`
-  h2 {
-    font-size: 3.5rem;
-    text-align: center;
-    font-weight: bold;
-  }
-`;

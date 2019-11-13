@@ -1,9 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { pullRequestData, forkedRepoData } from "./helperFunctions";
 
-const Form = ({ handleSubmit, handleChange, username, display }) => {
+const Form = ({
+  getPullRequest,
+  getForkedRepos,
+  getIsLoading,
+  getUsername
+}) => {
+  const [username, setUsername] = useState("");
+
+  const handleChange = e => setUsername(e.target.value);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    fetch(`https://api.github.com/users/${username}/events`)
+      .then(res => (res.status === 200 ? res.json() : ""))
+      .then(data => {
+        getIsLoading(true);
+        getPullRequest(pullRequestData(data));
+        getForkedRepos(forkedRepoData(data));
+        getUsername(username);
+      })
+      .catch(err => console.log(err.message));
+  };
   return (
-    <FormContainer display={display}>
+    <FormContainer className="wrapper">
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">Github Username:</label>
         <input
@@ -13,7 +35,7 @@ const Form = ({ handleSubmit, handleChange, username, display }) => {
           onChange={handleChange}
           required
         />
-        <button>Submit</button>
+        <button type="submit">Submit</button>
       </form>
     </FormContainer>
   );

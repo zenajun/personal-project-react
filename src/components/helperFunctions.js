@@ -1,4 +1,4 @@
-export const getPullRequestData = repos => {
+export const pullRequestData = repos => {
   return (
     repos
       // filter for Pull Request Events
@@ -22,7 +22,7 @@ export const getPullRequestData = repos => {
   );
 };
 
-export const getForkedRepoData = repos => {
+export const forkedRepoData = repos => {
   return (
     repos
       // filter for fork events
