@@ -31,7 +31,7 @@ const App = () => {
     );
   } else {
     return (
-      <Display heading={username ? username : "Data is loading..."}>
+      <Display heading={username}>
         <DisplayList
           title={"Recent Forks"}
           repos={forkedRepoData}
