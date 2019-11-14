@@ -3,22 +3,29 @@ import styled from "styled-components";
 import { pullRequestData, forkedRepoData } from "./helperFunctions";
 
 const Form = ({
-  getPullRequest,
+  getPullRequests,
   getForkedRepos,
   getIsLoading,
   getUsername
 }) => {
   const [username, setUsername] = useState("");
+  const [searchResult, setSearchResult] = useState(true);
 
   const handleChange = e => setUsername(e.target.value);
-
+  const noUserFound = () => {
+    getIsLoading(false);
+    setSearchResult(false);
+  };
+  const userFound = res => {
+    getIsLoading(true);
+    res.json();
+  };
   const handleSubmit = e => {
     e.preventDefault();
     fetch(`https://api.github.com/users/${username}/events`)
-      .then(res => (res.status === 200 ? res.json() : ""))
+      .then(res => (res.status === 200 ? userFound(res) : noUserFound()))
       .then(data => {
-        getIsLoading(true);
-        getPullRequest(pullRequestData(data));
+        getPullRequests(pullRequestData(data));
         getForkedRepos(forkedRepoData(data));
         getUsername(username);
       })
@@ -37,6 +44,7 @@ const Form = ({
         />
         <button type="submit">Submit</button>
       </form>
+      {searchResult ? "" : <p>Sorry, {username} not found.</p>}
     </FormContainer>
   );
 };
@@ -67,5 +75,4 @@ form {
 }
   
 }
-  /* display: ${props => (!props.display ? "none" : "block")}; */
 `;

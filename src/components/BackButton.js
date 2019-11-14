@@ -1,9 +1,7 @@
-import React from 'react';
+import React from "react";
 
-const BackButton = ({handleNewSearch}) => {
-  return (
-    <button onClick={handleNewSearch}>Search for a new user</button>
-  )
-}
+const BackButton = ({ newSearch }) => {
+  return <button onClick={() => newSearch()}>Search for a new user</button>;
+};
 
 export default BackButton;

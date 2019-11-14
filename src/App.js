@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Form from "./components/Form";
+import Display from "./components/Display";
 import DisplayList from "./components/DisplayList";
+import BackButton from "./components/BackButton";
 
 const App = () => {
   const [pullRequestData, setPullRequestData] = useState([]);
@@ -12,7 +14,12 @@ const App = () => {
   const getForkedRepos = data => setForkedRepoData(data);
   const getIsLoading = (isLoading = false) => setIsLoading(isLoading);
   const getUsername = username => setUsername(username);
-
+  const newSearch = () => {
+    setUsername("");
+    setIsLoading(false);
+    setForkedRepoData([]);
+    setPullRequestData([]);
+  };
   if (!isLoading) {
     return (
       <Form
@@ -24,19 +31,19 @@ const App = () => {
     );
   } else {
     return (
-      <RepoDisplay className="wrapper">
-        <h2>{username}</h2>
+      <Display heading={username ? username : "Data is loading..."}>
         <DisplayList
           title={"Recent Forks"}
-          repos={forkedRepos}
+          repos={forkedRepoData}
           repoRoot="Forked from: "
         />
         <DisplayList
           title={"Recent Pull Requests"}
-          repos={pullRequests}
+          repos={pullRequestData}
           repoRoot="status: "
         />
-      </RepoDisplay>
+        {username ? <BackButton newSearch={newSearch} /> : ""}
+      </Display>
     );
   }
 };
